@@ -1,0 +1,45 @@
+# ARM toolchain (2.9G) — download separately
+toolchain/
+
+# Upstream chdk git metadata (moved aside when vendoring)
+.chdk-upstream.git/
+
+__pycache__/
+
+# CHDK build output
+*.o
+*.a
+*.elf
+*.elf.syms
+*.bin.dump
+chdk/bin/
+chdk/revision.inc
+chdk/CHDK/MODULES/
+chdk/CHDK/LUALIB/GEN/
+chdk/CHDK/DATA/logo.dat
+chdk/doc/camnotes.txt
+chdk/doc/readme.txt
+chdk/lib/font/font_8x16_uni_packed.h
+chdk/lib/lang/lang_str.h
+chdk/loader/*/main.bin
+chdk/platform/*/sub/*/main.bin
+chdk/platform/*/sub/*/PRIMARY.BIN
+chdk/platform/*/sub/*/bin_compat.h
+chdk/modules/exportlist.inc
+chdk/modules/module_exportlist.h
+chdk/modules/module_hashlist.c
+chdk/tools/sig_ref_*.bin
+chdk/tools/code_gen
+chdk/tools/dancingbits
+chdk/tools/elf2flt/elf2flt
+chdk/tools/elf2flt/fltdump
+chdk/tools/finsig_dryos
+chdk/tools/finsig_vxworks
+chdk/tools/font_8x16_pack
+chdk/tools/gen_conf_lua
+chdk/tools/gensig_dryos
+chdk/tools/gensig_vxworks
+chdk/tools/makeexport
+chdk/tools/makelang
+chdk/tools/packfi2/fi2enc
+chdk/tools/pakwif

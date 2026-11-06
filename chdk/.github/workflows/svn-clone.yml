@@ -1,0 +1,99 @@
+on:
+  schedule:
+    - cron: "0 6,18 * * *"
+  workflow_dispatch:
+jobs:
+  init:
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:22.04
+    permissions:
+      contents: write
+    steps:
+      - name: install prerequisites
+        run: |
+          apt-get update
+          apt-get install --allow-downgrades -y git git-svn subversion
+      - name: checkout trunk
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: configure svn credential storage
+        run: |
+          mkdir -p ~/.subversion
+          cat > ~/.subversion/servers <<EOF
+          [global]
+          store-passwords = yes
+          store-auth-creds = yes
+          EOF
+      - name: configure git identity
+        run: |
+          git config --global user.name "eoschdk-aggregate[bot]"
+          git config --global user.email "eoschdk-aggregate[bot]@users.noreply.github.com"
+      - name: clone svn repository
+        env:
+          SVN_USERNAME: guest
+          SVN_PASSWORD: guest
+        run: |
+          git config --global --add safe.directory '*'
+
+          echo "$SVN_PASSWORD" | \
+          git svn clone \
+            --quiet --quiet \
+            --trunk=trunk \
+            --branches=branches \
+            --tags=tags \
+            --prefix=svn/ \
+            --username "$SVN_USERNAME" \
+            https://subversion.assembla.com/svn/chdk \
+            svn-mirror
+
+          svn_revision() {
+            git log -1 --pretty=%B "${1:-HEAD}" \
+            | sed -n 's/^.*git-svn-id:[^@]*@\([0-9]\+\).*/\1/p'
+          }
+
+          GITHUB_REV=$(svn_revision)
+
+          cd svn-mirror
+          git checkout -b trunk remotes/svn/trunk
+          git branch -D master
+
+          ASSEMBLA_REV=$(svn_revision)
+
+          git log --reverse --pretty=%H |
+          while read c; do
+            [ "$(svn_revision "$c")" -gt "$GITHUB_REV" ] \
+            2>/dev/null &&
+            git format-patch -1 "$c" -o /tmp
+          done
+
+          cd ..
+          git am /tmp/patch-*.patch
+      # - name: restore workflow files to trunk
+      #   run: |
+      #     mkdir -p svn-mirror/.github/workflows/
+      #     cp .github/workflows/svn-clone.yml svn-mirror/.github/workflows/svn-clone.yml
+
+      #     cd svn-mirror
+      #     git add .github/workflows/svn-clone.yml
+      #     git commit \
+      #       -m "restore workflow" \
+      #       -m "Co-authored-by: Mahied Maruf <contact@mechite.com>" \
+      #       -m "Co-authored-by: Enzo van der Tuin <55853439+JegoxMC@users.noreply.github.com>" \
+      #       -m "Signed-off-by: chdk-aggregate <chdk-aggregate[bot]@users.noreply.github.com>"
+      - name: push canonical mirror to GitHub
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ls /tmp/patch-*.patch \
+          >/dev/null \
+          2>&1 \
+          || {
+            echo "No new SVN revisions"
+            exit 0
+          }
+        
+          git remote add origin \
+          "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}"
+          git push origin trunk

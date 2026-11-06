@@ -1,0 +1,7 @@
+<x:xmpmeta xmlns:x="adobe:ns:meta/"><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<rdf:Description xmlns:crs="http://ns.adobe.com/camera-raw-settings/1.0/">
+<!-- measured from IMG_0341 before/after (Lightroom web, curves only) -->
+<crs:ToneCurvePV2012Red><rdf:Seq><rdf:li>0, 0</rdf:li><rdf:li>32, 29</rdf:li><rdf:li>64, 61</rdf:li><rdf:li>96, 90</rdf:li><rdf:li>128, 124</rdf:li><rdf:li>160, 153</rdf:li><rdf:li>192, 175</rdf:li><rdf:li>224, 193</rdf:li><rdf:li>255, 206</rdf:li></rdf:Seq></crs:ToneCurvePV2012Red>
+<crs:ToneCurvePV2012Green><rdf:Seq><rdf:li>0, 0</rdf:li><rdf:li>32, 25</rdf:li><rdf:li>64, 61</rdf:li><rdf:li>96, 99</rdf:li><rdf:li>128, 132</rdf:li><rdf:li>160, 157</rdf:li><rdf:li>192, 175</rdf:li><rdf:li>224, 191</rdf:li><rdf:li>255, 204</rdf:li></rdf:Seq></crs:ToneCurvePV2012Green>
+<crs:ToneCurvePV2012Blue><rdf:Seq><rdf:li>0, 0</rdf:li><rdf:li>32, 20</rdf:li><rdf:li>64, 51</rdf:li><rdf:li>96, 84</rdf:li><rdf:li>128, 114</rdf:li><rdf:li>160, 139</rdf:li><rdf:li>192, 159</rdf:li><rdf:li>224, 177</rdf:li><rdf:li>255, 191</rdf:li></rdf:Seq></crs:ToneCurvePV2012Blue>
+</rdf:Description></rdf:RDF></x:xmpmeta>
